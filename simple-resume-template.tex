@@ -1,0 +1,306 @@
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8 Unicode
+% =========================================================
+%  Resume Template (Engineering-style LaTeX)
+%  - Single column, high density, one-page friendly
+%  - WSL / Linux safe
+%  - All knobs are configurable at top
+% =========================================================
+
+\documentclass[10.5pt,a4paper]{article}
+
+% =========================================================
+% =============== 用户可配置区域（CONFIG） =================
+% =========================================================
+
+% ---------- 页面密度控制 ----------
+% 1 = 舒适（内容少）
+% 2 = 紧凑（默认，推荐）
+% 3 = 极限压缩（强行 1 页）
+\newcommand{\DefaultDensity}{2}
+
+% ---------- 正文字号控制 ----------
+% 1 = 正文和 bullet 都偏大（可读性优先）
+% 2 = 平衡（推荐）
+% 3 = bullet 更小（压缩到 1 页）
+\newcommand{\DefaultBodyFont}{2}
+
+% ---------- 页面边距（会被 density 覆盖，这里是兜底值） ----------
+\usepackage[a4paper,
+  left=1.6cm,
+  right=1.6cm,
+  top=1.25cm,
+  bottom=1.25cm]{geometry}
+
+% =========================================================
+% ================== 基础宏包 ==============================
+% =========================================================
+
+\usepackage{array}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{etoolbox}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% =========================================================
+% ================== 字体配置（WSL-safe） ==================
+% =========================================================
+
+\setmainfont{TeX Gyre Termes}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}[AutoFakeBold=2,AutoFakeSlant=0.2]
+}{
+  \setCJKmainfont{AR PL UMing CN}
+}
+
+% =========================================================
+% ================== 段落与行距 ============================
+% =========================================================
+
+\setstretch{1.06}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+% =========================================================
+% ================== 超链接样式 ============================
+% =========================================================
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=black,
+  citecolor=black,
+  pdfborder={0 0 0}
+}
+
+% =========================================================
+% ================== Section 标题样式 =====================
+% =========================================================
+
+\titleformat{\section}{\bfseries\large}{}{0pt}{}
+\titlespacing*{\section}{0pt}{10pt}{4pt}
+
+\newcommand{\Section}[1]{%
+  \section*{#1}%
+  \vspace{-2pt}\hrule height 0.8pt \vspace{6pt}
+}
+
+% =========================================================
+% ================== 版式原子组件（Macros） ===============
+% =========================================================
+
+\newcommand{\Name}[1]{%
+  {\centering {\LARGE\bfseries #1}\par}
+  \vspace{2pt}
+}
+
+\newcommand{\HeaderLine}[1]{%
+  {\centering #1\par}
+  \vspace{4pt}
+}
+
+\newcommand{\LR}[2]{%
+  \noindent\textbf{#1}\hfill #2\par
+}
+
+\newcommand{\LRit}[2]{%
+  \noindent\textit{#1}\hfill #2\par
+  \ifnum\D=1 \vspace{-1pt}\fi
+  \ifnum\D=2 \vspace{-2pt}\fi
+  \ifnum\D=3 \vspace{-3pt}\fi
+}
+
+\newcommand{\LRplain}[2]{%
+  \noindent{\BodyTextSize #1}\hfill {\BodyTextSize #2}\par
+}
+
+% =========================================================
+% ================== 密度旋钮（Density） ==================
+% =========================================================
+
+\newcommand{\density}[1]{%
+  \def\D{#1}%
+
+  \ifnum\D=1
+    \newgeometry{left=1.6cm,right=1.6cm,top=1.25cm,bottom=1.25cm}
+  \fi
+  \ifnum\D=2
+    \newgeometry{left=1.45cm,right=1.45cm,top=1.15cm,bottom=1.15cm}
+  \fi
+  \ifnum\D=3
+    \newgeometry{left=1.35cm,right=1.35cm,top=1.05cm,bottom=1.05cm}
+  \fi
+
+  \ifnum\D=1 \setstretch{1.06}\fi
+  \ifnum\D=2 \setstretch{1.03}\fi
+  \ifnum\D=3 \setstretch{0.99}\fi
+
+  \ifnum\D=1 \titlespacing*{\section}{0pt}{10pt}{4pt}\fi
+  \ifnum\D=2 \titlespacing*{\section}{0pt}{8pt}{3pt}\fi
+  \ifnum\D=3 \titlespacing*{\section}{0pt}{6pt}{2pt}\fi
+
+  \ifnum\D=1
+    \renewcommand{\Section}[1]{\section*{##1}\vspace{-2pt}\hrule height 0.8pt \vspace{6pt}}
+  \fi
+  \ifnum\D=2
+    \renewcommand{\Section}[1]{\section*{##1}\vspace{-3pt}\hrule height 0.8pt \vspace{5pt}}
+  \fi
+  \ifnum\D=3
+    \renewcommand{\Section}[1]{\section*{##1}\vspace{-4pt}\hrule height 0.8pt \vspace{4pt}}
+  \fi
+
+  \ifnum\D=1
+    \setlist[itemize]{
+      leftmargin=1.25em,
+      labelindent=0pt,
+      labelwidth=0pt,
+      labelsep=0.7em,
+      label=\textbullet,
+      topsep=2pt,
+      itemsep=2pt,
+      parsep=0pt,
+      partopsep=0pt
+    }
+  \fi
+
+  \ifnum\D=2
+    \setlist[itemize]{
+      leftmargin=1.25em,
+      labelindent=0pt,
+      labelwidth=0pt,
+      labelsep=0.65em,
+      label=\textbullet,
+      topsep=1.5pt,
+      itemsep=1.5pt,
+      parsep=0pt,
+      partopsep=0pt
+    }
+  \fi
+
+  \ifnum\D=3
+    \setlist[itemize]{
+      leftmargin=1.25em,
+      labelindent=0pt,
+      labelwidth=0pt,
+      labelsep=0.6em,
+      label=\textbullet,
+      topsep=1pt,
+      itemsep=1pt,
+      parsep=0pt,
+      partopsep=0pt
+    }
+  \fi
+
+  \ifnum\D=1 \renewcommand{\arraystretch}{1.08}\fi
+  \ifnum\D=2 \renewcommand{\arraystretch}{1.03}\fi
+  \ifnum\D=3 \renewcommand{\arraystretch}{0.98}\fi
+}
+
+% =========================================================
+% ================== 正文字号旋钮（Body Font） =============
+% =========================================================
+
+\newcommand{\BodyTextSize}{\normalsize}
+\newcommand{\BulletTextSize}{\normalsize}
+
+\newcommand{\bodyfont}[1]{%
+  \def\B{#1}%
+  \ifnum\B=1
+    \renewcommand{\BodyTextSize}{\normalsize}
+    \renewcommand{\BulletTextSize}{\normalsize}
+  \fi
+  \ifnum\B=2
+    \renewcommand{\BodyTextSize}{\small}
+    \renewcommand{\BulletTextSize}{\small}
+  \fi
+  \ifnum\B=3
+    \renewcommand{\BodyTextSize}{\small}
+    \renewcommand{\BulletTextSize}{\footnotesize}
+  \fi
+}
+
+\AtBeginEnvironment{itemize}{\BulletTextSize}
+\AtEndEnvironment{itemize}{\BodyTextSize}
+
+% =========================================================
+% ================== 正文开始 ==============================
+% =========================================================
+
+\begin{document}
+\pagenumbering{gobble}
+
+\density{\DefaultDensity}
+\bodyfont{\DefaultBodyFont}
+\BodyTextSize
+
+% ================== HEADER ==================
+
+\Name{示例姓名}
+\HeaderLine{\small (+86) 138-0000-0000 \;|\; example.email@domain.com}
+\HeaderLine{\small 中国 · 北京}
+
+% ================== EDUCATION ==================
+\Section{教育背景}
+
+\LR{某某大学 \quad 工学学士}{中国 \quad 北京}
+\LRit{计算机科学与技术}{2019.9--2023.6}
+\begin{itemize}
+  \item GPA: 3.7 / 4.0（专业前 15\%）
+  \item 主修课程：数据结构、操作系统、计算机网络、数据库系统、软件工程
+  \item 荣誉奖项：校级优秀学生奖学金（2020--2022）
+\end{itemize}
+
+% ================== EXPERIENCE ==================
+\Section{实习经历}
+
+\LR{某互联网科技公司}{中国 \quad 上海}
+\LRit{后端开发实习生}{2022.6--2022.9}
+\begin{itemize}
+  \item 参与核心业务系统模块开发，使用 Java / Spring Boot 实现 RESTful API
+  \item 优化数据查询逻辑，将关键接口响应时间降低约 30\%
+  \item 编写单元测试与技术文档，配合团队完成版本迭代
+\end{itemize}
+
+% ================== RESEARCH ==================
+\Section{科研 / 项目经历}
+
+\LRplain{\textbf{分布式任务调度系统设计与实现}}{2021.10--2022.3}
+\begin{itemize}
+  \item 基于消息队列与多线程模型实现任务调度与负载均衡
+  \item 支持失败重试与任务监控，提升系统稳定性与可扩展性
+\end{itemize}
+
+% ================== COMPETITIONS ==================
+\Section{竞赛经历}
+
+\begin{tabularx}{\textwidth}{@{}Y p{4.2cm} p{1.8cm}@{}}
+全国大学生程序设计竞赛 & 区域赛银奖 & 2022.11 \\
+Mathematical Contest in Modeling & Honorable Mention & 2021.5 \\
+\end{tabularx}
+
+% ================== CAMPUS ==================
+\Section{校园活动}
+
+\LRplain{\textbf{计算机学院学生会 · 技术部}}{2020.9--2021.6}
+\begin{itemize}
+  \item 维护学院官方网站，协助组织技术分享与编程活动
+\end{itemize}
+
+% ================== SKILLS ==================
+\Section{技能}
+
+\begin{itemize}
+  \item 编程语言：Java / Python / C++
+  \item 技术栈：Linux、Git、MySQL、Docker
+  \item 语言能力：普通话（母语），英语（CET-6）
+\end{itemize}
+
+\end{document}
